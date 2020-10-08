@@ -1,4 +1,4 @@
-import reddit from './redditapi';
+// import reddit from './redditapi';
 
 const searchForm = document.getElementById('search-form');
 const searchBtn = document.getElementById('search-btn');
@@ -12,7 +12,7 @@ searchForm.addEventListener('submit', e => {
   const sortBy = document.querySelector('input[name="sortby"]:checked').value;
   // console.log(sortBy);
   const searchLimit = document.getElementById('limit').value;
-  // console.log(searchLimit);
+  console.log(searchLimit);
 
   if (searchTerm === '') {
     showMessage('Please add a search term', 'alert-danger');
@@ -20,7 +20,7 @@ searchForm.addEventListener('submit', e => {
 
   // searchInput.value = '';
   // search reddit
-  reddit.search(searchTerm, searchLimit, sortBy)
+  search(searchTerm, searchLimit, sortBy)
     .then(results => {
       console.log(results);
       let output = '<div class="card-columns">';
@@ -65,4 +65,11 @@ function showMessage(message, className) {
   // console.log(searchContainer);
   setTimeout(() => div.remove(), 1000);
 
+}
+
+function search(searchTerm, searchLimit, sortBy) {
+  return fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`)
+    .then(res => res.json())
+    .then(data => data.data.children.map(data => data.data))
+    .catch(err => console.log(err));
 }
