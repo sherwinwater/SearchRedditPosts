@@ -68,7 +68,11 @@ function showMessage(message, className) {
 }
 
 function search(searchTerm, searchLimit, sortBy) {
-  return fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`)
+
+  const proxy = "https://cors-anywhere.herokuapp.com/"; 
+  const url = `${proxy}http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`;
+
+  return fetch(url)
     .then(res => res.json())
     .then(data => data.data.children.map(data => data.data))
     .catch(err => console.log(err));
